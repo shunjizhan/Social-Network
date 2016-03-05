@@ -26,8 +26,18 @@ class Node {
   void setIndex(int index){ this->index = index;}
 
  private:
+
+  class FriendNode {
+    FriendNode(string name, FriendNode* next) {
+      this->name = name;
+      this->next = next;
+    }
+    string name;
+    FriendNode* next;
+  };
+  
   string name;
   int index;
-  Node* friend;
+  FriendNode* friend;
       
 };
