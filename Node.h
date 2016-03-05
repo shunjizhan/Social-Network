@@ -1,43 +1,24 @@
+#include <stddef.h>
+#include <string>
 using namespace std;
 
 class Node {
  public:
-  Node() {
-    this->name = "";
-    this->index = -1;
-    this->friend = NULL;
-  }
+  Node(string name, int index);
+  void addFriend(Node* next);  // add a friend to his list of friends
 
-  Node(string name) {
-    this->name = name;
-    this->index = -1;
-    this->friend = NULL;
-  }
-
-  void addFriend(string firend1, string friend2) {
-    
-  }
-
+  // getters and setters
   string getName() { return this->name; }
   int getIndex() { return this->index; }
-  Node* getFriend() { return this->friend; }
+  Node* getNextFriend() { return this->nextFriend; }
 
   void setName(string name){ this->name = name;}
   void setIndex(int index){ this->index = index;}
+  void setNextFriend(Node* next) { this->nextFriend = next;}
 
  private:
-
-  class FriendNode {
-    FriendNode(string name, FriendNode* next) {
-      this->name = name;
-      this->next = next;
-    }
-    string name;
-    FriendNode* next;
-  };
-  
   string name;
   int index;
-  FriendNode* friend;
+  Node* nextFriend;
       
 };
