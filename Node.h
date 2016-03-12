@@ -1,10 +1,12 @@
 #include <stddef.h>
 #include <string>
+#include <iostream>
 using namespace std;
 
 class Node {
  public:
   Node(string name, int index);
+  Node(string name);
   void addFriend(Node* next);  // add a friend to his list of friends
 
   // getters and setters

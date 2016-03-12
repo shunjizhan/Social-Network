@@ -2,20 +2,30 @@
 #include "HashTable.h"
 using namespace std;
 
+
 HashTable::HashTable() {
-  table = new Node*[211];
-  for(int i=0; i<211; i++) {
+  table = new Node*[TABLE_SIZE];
+  for(int i=0; i<TABLE_SIZE; i++) {
     table[i] = NULL;
   }
 }
 
-void HashTable::insert(string name, int index) {
-  int h = hash(name);
+
+void HashTable::insert(string name, int index, vector<string> words) {
+  // create a new node with all the informations
+  // friends start from words[3]
   Node* node = new Node(name, index);
+  for(int i=3; i<words.size(); i++) {
+    node->addFriend(new Node(words[i]));
+  }     
+
+  // add it to the table
+  int h = hash(name);
   while(table[h] != NULL) {
-    h++;
+    h = (h+1) % TABLE_SIZE;
   }
   table[h] = node;
+  
 }
 
 int HashTable::search(string name) {
@@ -47,5 +57,21 @@ void HashTable::addFriend(string friend1, string friend2) {
 }
 
 void HashTable::printAll() {
-  
+  int count = 0;
+  for(int i=0; i<TABLE_SIZE; i++) {
+    if(table[i] != NULL) {
+      count++;
+      cout << "name=" << table[i]->getName()
+	   << " index=" << table[i]->getIndex()
+	   << " friend:";
+      Node* thisFriend = table[i]->getNextFriend();
+      while( thisFriend != NULL) {
+	cout << thisFriend->getName() << ",";
+	thisFriend = thisFriend->getNextFriend();
+      }
+      cout << endl;
+      
+    } // end if
+  }
+  cout << "number of people=" << count << endl;
 }

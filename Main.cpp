@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include "HashTable.h"
 using namespace std;
 
 vector<string> split(string str, char delimiter)
@@ -20,17 +21,29 @@ vector<string> split(string str, char delimiter)
 
 int main()
 {
+  HashTable hashtable;
+	
 	ifstream f;
 	f.open("Generated1.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
+
+	// initialize the hash table
 	else
 	{
+	  int index=0;
 		string line;
 		while(std::getline(f, line))
 		{
-			vector<string> words = split(line, ',');
-			// ... TO DO ...
+		  vector<string> words = split(line, ',');
+			string name = words[0];
+			int thisIndex = index;
+			index++;
+			hashtable.insert(name,index,words);
+
 		}
 	}
+
+		hashtable.printAll();
+	
 	return 0;
 }

@@ -1,3 +1,4 @@
+#include <vector>
 #include "Node.h"
 using namespace std;
 
@@ -6,7 +7,7 @@ class HashTable {
   const static int TABLE_SIZE = 211;
   
   HashTable();
-  void insert(string name, int index);
+  void insert(string name, int index, vector<string> friends);
   int search(string name);  // find index in the hash table
   int hash(string name);
   void addFriend(string friend1, string friend2);
