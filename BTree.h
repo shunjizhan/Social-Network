@@ -74,7 +74,10 @@ class BTree {
   void split(BTreeNode* node) {
     cout << "!!!!!!!!!!!!!! split !!!!!!!!!!!!!!!!!!!" << endl;
     BTreeNode* parent = node->parent;
+    cout << "parent's keyList=";
     printKeyList(parent);
+    cout << endl;
+    
     if(parent == NULL) {  // this is the root
       BTreeNode* newRoot = new BTreeNode(false,NULL);
       BTreeNode* left = new BTreeNode(true,newRoot);
@@ -111,8 +114,8 @@ class BTree {
       }
       
       parent->keys[i+1] = right->keys[0];
-      parent->children[i] = left;
-      parent->children[i+1] = right;
+      parent->children[i+1] = left;
+      parent->children[i+2] = right;
       
       parent->currentKeyNumber++;
       if(parent->currentKeyNumber == 5) {
@@ -135,8 +138,8 @@ class BTree {
     int goesUp     = node->keys[2];
     right->keys[0] = node->keys[3];
     right->keys[1] = node->keys[4];
-    left->currentKeyNumber = 3;
-    right->currentKeyNumber = 3;
+    left->currentKeyNumber = 2;
+    right->currentKeyNumber = 2;
     
     // copy all the children
     left->children[0] = node->children[0];
@@ -175,6 +178,7 @@ class BTree {
       newRoot->keys[0] = goesUp;
       newRoot->children[0] = left;
       newRoot->children[1] = right;
+      newRoot->currentKeyNumber = 1;
       root = newRoot;
     }
 
