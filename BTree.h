@@ -18,15 +18,15 @@ class BTreeNode {
     }
     this->currentKeyNumber = 0;
     this->isLeaf = isLeaf;
-    left = NULL;
-    right = NULL;
+    leftP = NULL;
+    rightP = NULL;
   }
   
   Node** keys;  
   BTreeNode** children;
   BTreeNode* parent;
-  BTreeNode* left;
-  BTreeNode* right;
+  BTreeNode* leftP;
+  BTreeNode* rightP;
   int currentKeyNumber;
   bool isLeaf;
   
@@ -85,6 +85,7 @@ class BTree {
     cout << endl;
     
     if(parent == NULL) {  // this is the root
+      cout << "LLLLLLLLLLLLLLLLLLLL";
       BTreeNode* newRoot = new BTreeNode(false,NULL);
       BTreeNode* left = new BTreeNode(true,newRoot);
       BTreeNode* right = new BTreeNode(true,newRoot);
@@ -100,17 +101,38 @@ class BTree {
       left->currentKeyNumber = 2;
       right->currentKeyNumber = 2;
       root = newRoot;
+
+      
+      // add all the B+ pointers
+      left->rightP = right;
+      right->leftP = left;
+      if(node->rightP != NULL) { node->rightP->leftP = right; }   
+      if(node->leftP != NULL) { node->leftP->rightP = left;}
+      left->leftP = node->leftP;
+      right->rightP = node->rightP;
+      
+      
     }
 
     else {    // this is not root
       BTreeNode* left = new BTreeNode(true,parent);
       BTreeNode* right = new BTreeNode(true,parent);
+      
       left->keys[0] = node->keys[0];
       left->keys[1] = node->keys[1];
       right->keys[0] = node->keys[2];
       right->keys[1] = node->keys[3];
       left->currentKeyNumber = 2;
       right->currentKeyNumber = 2;
+
+      // add all the B+ pointers
+      left->rightP = right;
+      right->leftP = left;
+      if(node->rightP != NULL) { node->rightP->leftP = right; }   
+      if(node->leftP != NULL) { node->leftP->rightP = left;}
+      left->leftP = node->leftP;
+      right->rightP = node->rightP;
+      
       // right->keys[0] 顶上去
       int i=parent->currentKeyNumber-1;
       while((i >= 0) && bigger(parent->keys[i]->getName(), right->keys[0]->getName())) {
@@ -129,6 +151,8 @@ class BTree {
       }
     }
 
+    //node->left = NULL;
+    //node->right = NULL;
     delete node;
   }
 
@@ -235,6 +259,12 @@ class BTree {
       
       cout << "parent's keyList=";
       printKeyList(node->parent);
+      cout << endl;
+
+      cout << "L=";
+      printKeyList(node->leftP);
+      cout << ", R=";
+      printKeyList(node->rightP);
       cout << endl;
       
       
