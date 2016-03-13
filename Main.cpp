@@ -28,7 +28,7 @@ int main()
   BTree btree;
 	
 	ifstream f;
-	f.open("Generated3.txt", ios::in);
+	f.open("Generated1.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
 
 	// initialize the hash table
@@ -43,7 +43,7 @@ int main()
 			int thisIndex = index;
 			index++;
 			hashtable.insert(name,index,words);
-			btree.insert(name);
+			btree.insert(new Node(name,index));
 			//cout << btree.bigger(name, "ZZZZZZZZZZZ");
 		}
 	        
