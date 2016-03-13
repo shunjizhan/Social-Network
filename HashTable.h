@@ -12,6 +12,8 @@ class HashTable {
   int hash(string name);
   void addFriend(string friend1, string friend2);
   void printAll();
+  int getUserIndex(string name);
+  void printUser(vector<string> info);
    
  private:
   Node** table;

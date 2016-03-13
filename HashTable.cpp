@@ -75,3 +75,20 @@ void HashTable::printAll() {
   }
   cout << "number of people=" << count << endl;
 }
+
+int HashTable::getUserIndex(string name) {
+  // find his index in the file, from hash table 
+  return search(name);
+}
+
+void HashTable::printUser(vector<string> info) {
+  for(int i=0; i<info.size(); i++) {
+    cout << info[i];
+    
+    if(i != info.size()-1) {
+      cout << ",";
+    }
+    
+  }
+  cout << endl;
+}

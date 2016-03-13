@@ -18,11 +18,15 @@ class BTreeNode {
     }
     this->currentKeyNumber = 0;
     this->isLeaf = isLeaf;
+    left = NULL;
+    right = NULL;
   }
   
   Node** keys;  
   BTreeNode** children;
   BTreeNode* parent;
+  BTreeNode* left;
+  BTreeNode* right;
   int currentKeyNumber;
   bool isLeaf;
   
@@ -268,6 +272,29 @@ class BTree {
     else { return false;}
 
   }
+
+  /*
+  vector<int> getAllIndex(string name1, string name2) {
+    string small;
+    string large;
+    
+    if(bigger(name1,name2)) {
+      small = name2;
+      large = name1;
+    }
+    else {
+      small = name1;
+      large = name2;
+    }
+
+    return range(small,large,root);    
+  }
+
+  vector<int> getAllIndex(string small, string large, BTreeNode* node) {
+    
+
+  }
+  */
   
  private:
   BTreeNode* root;

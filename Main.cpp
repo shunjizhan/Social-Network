@@ -22,13 +22,32 @@ vector<string> split(string str, char delimiter)
 	return internal;
 }
 
+vector<string> getUser(int index) {
+  vector<string> allInfo;
+  string line;
+  ifstream myfile;
+  myfile.open("Generated3.txt", ios::in);
+  for (int lineno = 0; getline (myfile,line) && lineno < index+1; lineno++) {
+    if (lineno == index) {
+      allInfo = split(line, ',');
+    }     
+  }
+  return allInfo;
+}
+
+void printUser(HashTable h, int index) {
+  vector<string> info = getUser(index);
+  h.printUser(info);
+}
+
 int main()
 {
   HashTable hashtable;
   BTree btree;
+  vector<string> user;
 	
 	ifstream f;
-	f.open("Generated1.txt", ios::in);
+	f.open("Generated3.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
 
 	// initialize the hash table
@@ -49,7 +68,9 @@ int main()
 	        
 	}
 
-	//hashtable.printAll();
+	hashtable.printAll();
+
+	//printUser(hashtable, 65);	
 	
 	return 0;
 }
