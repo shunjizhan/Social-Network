@@ -1,14 +1,17 @@
 #include <stddef.h>
 #include <iostream>
+#include <string>
+#include <cstring>
+
 using namespace std;
 
 class BTreeNode {
  public:
   BTreeNode(bool isLeaf, BTreeNode* parent) {
-    this->keys = new int[5];
+    this->keys = new string[5];
     this->children = new BTreeNode*[6];
     for(int i=0; i<5; i++) {
-      keys[i] = 99;
+      keys[i] = "zzzzzzzzzzzzz";
     }
     this->parent = parent;
     for(int i=0; i<6; i++) {
@@ -18,7 +21,7 @@ class BTreeNode {
     this->isLeaf = isLeaf;
   }
   
-  int* keys;  
+  string* keys;  
   BTreeNode** children;
   BTreeNode* parent;
   int currentKeyNumber;
@@ -32,8 +35,8 @@ class BTree {
     root = NULL;
   }
 
-  void insert(int k) {
-    cout << "inserting " << k << endl;
+  void insert(std::string k) {
+    cout << "-------------------------inserting " << k << "----------------------------" << endl;
     if(root == NULL) {
       root = new BTreeNode(true,NULL);
       root->keys[0] = k;
@@ -41,25 +44,25 @@ class BTree {
     }
 
     else {
-      cout << "finding leaf to insert" << k << endl;
       BTreeNode* leafToInsert = find(k);
-      
-      cout << "inserting..." << endl;
+      cout << "found leaf" << endl;
       insert(k,leafToInsert);
-      cout << "insert[" << k << "]complete!" << endl;
     }
 
     cout << "print tree........" << endl;
     printTree();
-    cout << endl;
+    cout << "-------------------------insert[" << k << "]complete!---------------------------" << endl; 
+    cout << endl<< endl;
   }
 
-  void insert(int k, BTreeNode* leaf) {
+  void insert(std::string k, BTreeNode* leaf) {
     int i=2;
 
-    while(leaf->keys[i] > k) {
+    while((i >= 0) && bigger(leaf->keys[i], k)) {
+      cout << "i=" << i;
       leaf->keys[i+1] = leaf->keys[i];
       i--;
+      //printKeyList(leaf);
     }
     
     leaf->keys[i+1] = k;
@@ -107,7 +110,7 @@ class BTree {
       right->currentKeyNumber = 2;
       // right->keys[0] 顶上去
       int i=parent->currentKeyNumber-1;
-      while(parent->keys[i] > right->keys[0]) {
+      while((i >= 0) && bigger(parent->keys[i], right->keys[0])) {
         parent->keys[i+1] = parent->keys[i];
         parent->children[i+2] = parent->children[i+1];
 	i--;
@@ -135,7 +138,7 @@ class BTree {
     // copy all the keys
     left->keys[0]  = node->keys[0];
     left->keys[1]  = node->keys[1];
-    int goesUp     = node->keys[2];
+    std::string goesUp  = node->keys[2];
     right->keys[0] = node->keys[3];
     right->keys[1] = node->keys[4];
     left->currentKeyNumber = 2;
@@ -159,7 +162,7 @@ class BTree {
     if(parent != NULL) { // this is not the root 
       // find place in the parent to put int goesUp
       int i = parent->currentKeyNumber-1;
-      while(parent->keys[i] > goesUp) {
+      while((i >= 0) && bigger(parent->keys[i], goesUp)) {
 	parent->keys[i+1] = parent->keys[i];
 	parent->children[i+2] = parent->children[i+1];
 	i--;
@@ -193,23 +196,25 @@ class BTree {
   }
   
 
-  BTreeNode* find(int k) { // find the leaf to insert k 
+  BTreeNode* find(string k) { // find the leaf to insert k
     return find(k,root);
   }
   
-  BTreeNode* find(int k, BTreeNode* node) {
+  BTreeNode* find(string k, BTreeNode* node) {
     cout << "k=" << k << ",";
     if(node->isLeaf == true) {
       cout << "isLeaf=" << node->isLeaf << endl;
       return node;
     }
 
+
     else {
       int i=0;
-      while(node->keys[i] < k && i<4) {
+      while( bigger(k, node->keys[i]) && i<4) {
 	i++;
       }
       // now i is the index of child pointer
+      if(k == "Zachary") {printKeyList(node->children[i]);}
       return find(k,node->children[i]);
     }   
   }
@@ -219,14 +224,11 @@ class BTree {
   }
 
   void printTree(BTreeNode* node) {
-    //cout << "printing tree..." << endl;
     if(node != NULL) {   
-      cout << "isLeaf="    
-	   << node->isLeaf
-	   << ", " << "keyList=";
-      
-      printKeyList(node);
+      cout << "isLeaf=" << node->isLeaf << ", " << "keyList=";
 
+      printKeyList(node);
+      
       cout << ", " << "currentKeyNumber=" << node->currentKeyNumber << ", ";
       
       cout << "parent's keyList=";
@@ -235,7 +237,6 @@ class BTree {
       
       
       for(int i=0; i<6; i++) {
-	//cout << "children[" << i << "] -";
 	printTree(node->children[i]);
       }
       
@@ -246,7 +247,7 @@ class BTree {
     if(node != NULL) {
       cout << "[";
       for(int i=0; i<5; i++) {
-	if(node->keys[i] != 99) {
+	if(node->keys[i] != "zzzzzzzzzzzzz") {
 	  cout << node->keys[i];
 	}
 	else {
@@ -257,8 +258,20 @@ class BTree {
       cout << "]";
     }
   }
-  
 
+  bool bigger(string s1, string s2) {
+    int i = 0;
+    
+    while((s1[i] == s2[i]) && (i < s1.length()-1) && (i < s2.length()-1)) {
+      i++;
+    }
+    
+    if(s1[i] > s2[i])  { return true;}
+    else { return false;}
+
+  }
+  
+ private:
   BTreeNode* root;
   
 };

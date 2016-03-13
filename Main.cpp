@@ -26,13 +26,9 @@ int main()
 {
   HashTable hashtable;
   BTree btree;
-
-  	for(int i=0; i<95; i++) {
-	  btree.insert(i);
-	}
 	
 	ifstream f;
-	f.open("Generated1.txt", ios::in);
+	f.open("Generated3.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
 
 	// initialize the hash table
@@ -47,8 +43,10 @@ int main()
 			int thisIndex = index;
 			index++;
 			hashtable.insert(name,index,words);
-
+			btree.insert(name);
+			//cout << btree.bigger(name, "ZZZZZZZZZZZ");
 		}
+	        
 	}
 
 	//hashtable.printAll();

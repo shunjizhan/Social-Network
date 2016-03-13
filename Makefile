@@ -1,5 +1,5 @@
 CXX=clang++
- #CXX=g++
+# CXX=g++
 
 run: Main.o BTree.o Node.o HashTable.o
 	${CXX} Main.o BTree.o Node.o HashTable.o -o run
