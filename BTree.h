@@ -106,7 +106,7 @@ class BTree {
       left->currentKeyNumber = 2;
       right->currentKeyNumber = 2;
       // right->keys[0] 顶上去
-      int i=parent->currentKeyNumber;
+      int i=parent->currentKeyNumber-1;
       while(parent->keys[i] > right->keys[0]) {
         parent->keys[i+1] = parent->keys[i];
         parent->children[i+2] = parent->children[i+1];
@@ -115,9 +115,9 @@ class BTree {
       
       parent->keys[i+1] = right->keys[0];
       parent->children[i+1] = left;
-      parent->children[i+2] = right;
-      
+      parent->children[i+2] = right;      
       parent->currentKeyNumber++;
+      
       if(parent->currentKeyNumber == 5) {
 	splitNonLeaf(parent);
       }
@@ -149,20 +149,25 @@ class BTree {
     right->children[1] = node->children[4];
     right->children[2] = node->children[5];
 
+    left->children[0]->parent = left;
+    left->children[1]->parent = left;
+    left->children[2]->parent = left;
+    right->children[0]->parent = right;
+    right->children[1]->parent = right;
+    right->children[2]->parent = right;
     
     if(parent != NULL) { // this is not the root 
-      
       // find place in the parent to put int goesUp
-      int i = parent->currentKeyNumber;
+      int i = parent->currentKeyNumber-1;
       while(parent->keys[i] > goesUp) {
 	parent->keys[i+1] = parent->keys[i];
 	parent->children[i+2] = parent->children[i+1];
 	i--;
       }
       
-      parent->keys[i+1] = right->keys[0];
-      parent->children[i] = left;
-      parent->children[i+1] = right;
+      parent->keys[i+1] = goesUp;
+      parent->children[i+1] = left;
+      parent->children[i+2] = right;
       
       parent->currentKeyNumber++;
       if(parent->currentKeyNumber == 5) {
@@ -179,6 +184,7 @@ class BTree {
       newRoot->children[0] = left;
       newRoot->children[1] = right;
       newRoot->currentKeyNumber = 1;
+      
       root = newRoot;
     }
 
@@ -221,15 +227,12 @@ class BTree {
       
       printKeyList(node);
 
-      cout << ", " << "currentKeyNumber=" << node->currentKeyNumber << endl;
+      cout << ", " << "currentKeyNumber=" << node->currentKeyNumber << ", ";
       
-      /*  
-      for(int i=0; i<6; i++) {
-        if(node->children[i] != NULL) {
-	  cout << "children[" << i << "]->isLeaf=" << node->children[i]->isLeaf << " ";
-	}
-      }
-      */
+      cout << "parent's keyList=";
+      printKeyList(node->parent);
+      cout << endl;
+      
       
       for(int i=0; i<6; i++) {
 	//cout << "children[" << i << "] -";
@@ -255,10 +258,7 @@ class BTree {
     }
   }
   
-    
-  
 
- private:
   BTreeNode* root;
   
 };
