@@ -39,7 +39,7 @@ class BTree {
   }
 
   void insert(Node* k) {
-    cout << "---------------------------- inserting " << k->getName() << " ------------------------------" << endl;
+    cout << "--------------- inserting " << k->getName() << " ---------------------" << endl;
     if(root == NULL) {
       root = new BTreeNode(true,NULL);
       root->keys[0] = k;
@@ -54,8 +54,8 @@ class BTree {
 
     //  cout << "print tree........" << endl;
     //  printTree(0);
-    cout << "------------------------- insert " << k->getName() << " complete! --------------------------" << endl; 
-    cout << endl<< endl;
+    cout << "--------------- insert " << k->getName() << " complete! --------------" << endl; 
+    cout << endl;
   }
 
   void insert(Node* k, BTreeNode* leaf) {
@@ -389,18 +389,18 @@ class BTree {
     vector<int> indexes;
     BTreeNode* smallLeaf = findLeaf(small);
     BTreeNode* largeLeaf = findLeaf(large);
-    cout << "small:";
-    printKeyList(smallLeaf);
-    cout << "  large:";
-    printKeyList(largeLeaf);
-    cout << endl;
+    // cout << "small:";
+    //printKeyList(smallLeaf);
+    //cout << "  large:";
+    //printKeyList(largeLeaf);
+    //cout << endl;
     int index = findIndex(small, smallLeaf, 1);
     int largeIndex = findIndex(large, largeLeaf, 2);
 
     BTreeNode* p = smallLeaf;
-    cout << "p=";
-    printKeyList(p);
-    cout << endl;
+    // cout << "p=";
+    //printKeyList(p);
+    //cout << endl;
     while(p != largeLeaf) {
       if(p->keys[index]->getName() != "~") {
 	indexes.push_back(p->keys[index]->getIndex());
@@ -410,21 +410,21 @@ class BTree {
       if(index == 4) {
 	index = 0;
 	p = p->rightP;
-	cout << "p=";
-	printKeyList(p);
-	cout << endl;
+	//	cout << "p=";
+	//	printKeyList(p);
+	//cout << endl;
       }
     }
 
-    cout << "p=";
-    printKeyList(p);
-    cout << endl;
+    //   cout << "p=";
+    //  printKeyList(p);
+    //cout << endl;
 
     for(int i=0; i<=largeIndex; i++) {
       if(p->keys[i]->getName() != "~") {
 	indexes.push_back(p->keys[i]->getIndex());
-	cout << "large index=" << largeIndex << endl;
-	cout << "i=" << i << endl;
+	//	cout << "large index=" << largeIndex << endl;
+	//	cout << "i=" << i << endl;
 	//cout << "added " << p->keys[index]->getIndex() << endl;
       }
     }

@@ -26,7 +26,7 @@ vector<string> getUser(int index) {   // index is the file index
   vector<string> allInfo;
   string line;
   ifstream myfile;
-  myfile.open("Generated3.txt", ios::in);
+  myfile.open("Generated1.txt", ios::in);
   for (int lineno = 0; getline (myfile,line) && lineno < index+1; lineno++) {
     if (lineno == index-1) {
       allInfo = split(line, ',');
@@ -50,7 +50,7 @@ void range(string name1, string name2, HashTable h, BTree btree) {
 
 void addLine(string s){
 	  ofstream myfile;
-	  myfile.open ("Generated3.txt", ios::app);
+	  myfile.open ("Generated1.txt", ios::app);
 	  myfile << s << "\n";
 	  myfile.close();
 	}
@@ -101,28 +101,33 @@ int main()
   int index=0;
   
 	ifstream f;
-	f.open("Generated3.txt", ios::in);
-	if(!f) cerr << "File not found" << endl;
+	f.open("Generated1.txt", ios::in);
+	if(!f) cerr << "File not found" << endl;      
 
-	// initialize the hash table
 	else
 	{
-
-		string line;
-		while(std::getline(f, line))
-		{
-		  vector<string> words = split(line, ',');
-			string name = words[0];
-			int thisIndex = index;
-			index++;
-			hashtable.insert(name,index,words);
-			btree.insert(new Node(name,index));
-		}
-	        
+	  cout << "~~~~~~~~~ file opened successfully ~~~~~~~" << endl << endl;
+	  
+	  string line;
+	  while(std::getline(f, line))
+	    {
+	      vector<string> words = split(line, ',');
+	      string name = words[0];
+	      int thisIndex = index;
+	      index++;
+	      hashtable.insert(name,index,words);
+	      btree.insert(new Node(name,index));
+	    }
+	  
 	}
+
+	cout << "~~~~~~~~~ hash table initialized complete ~~~~~~~~~" << endl << endl;
+	cout << "~~~~~~~~~~~ BTree initialized complete ~~~~~~~~~~~~" << endl << endl;
 	
 	try
 	  {
+
+	    cout << "~~~~~~~~~~~~~ program ready for input ~~~~~~~~~~~~~" << endl << endl;
 	    
 	    while(true)
 	      {
@@ -154,6 +159,7 @@ int main()
 		else if(str.compare("printAll")== 0)
 		  {
 		    printAll(hashtable, index+1);
+		    cout << endl;
 		  }
 		else if(str.compare("range")== 0)
 		  {
@@ -176,12 +182,18 @@ int main()
 		    string name;
 		    cin >> name;
 		    printFriends(name, hashtable);
+		    cout << endl;
 		  }
 		else if(str.compare("addFriend")==0)
 		  {
 		    string friend1, friend2;
 		    cin >> friend1 >> friend2;
 		    hashtable.addFriend(friend1, friend2);
+		    cout << "~~ now " << friend1 << " and " << friend2 << " are good friends! ~~" << endl;
+		  }
+		else if(str.compare("printHashTable")==0)
+		  {
+		    hashtable.printAll();
 		  }
 	      }
 	  }

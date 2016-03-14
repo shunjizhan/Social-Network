@@ -62,11 +62,15 @@ void HashTable::printAll() {
     if(table[i] != NULL) {
       count++;
       cout << "name=" << table[i]->getName()
-	   << " tableIndex=" << table[i]->getIndex()
+	   << " index in the file=" << table[i]->getIndex()
 	   << " friend:";
       Node* thisFriend = table[i]->getNextFriend();
       while( thisFriend != NULL) {
-	cout << thisFriend->getName() << ",";
+	
+	cout << thisFriend->getName();
+	if(thisFriend->getNextFriend()!=NULL){
+	  cout << ",";
+	}
 	thisFriend = thisFriend->getNextFriend();
       }
       cout << endl;
