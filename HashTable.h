@@ -14,7 +14,8 @@ class HashTable {
   void printAll();
   int getUserIndex(string name);
   void printUser(vector<string> info);
-   
+  Node* getNode(int index);
+
  private:
   Node** table;
   

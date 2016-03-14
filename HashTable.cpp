@@ -62,7 +62,7 @@ void HashTable::printAll() {
     if(table[i] != NULL) {
       count++;
       cout << "name=" << table[i]->getName()
-	   << " table index=" << table[i]->getIndex()
+	   << " tableIndex=" << table[i]->getIndex()
 	   << " friend:";
       Node* thisFriend = table[i]->getNextFriend();
       while( thisFriend != NULL) {
@@ -92,3 +92,9 @@ void HashTable::printUser(vector<string> info) {
   }
   cout << endl;
 }
+
+Node* HashTable::getNode(int index) {
+  Node* node = table[index];
+  return node;
+}
+

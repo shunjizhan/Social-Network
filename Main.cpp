@@ -48,12 +48,43 @@ void range(string name1, string name2, HashTable h, BTree btree) {
   }
 }
 
+void addLine(string s){
+	  ofstream myfile;
+	  myfile.open ("Generated3.txt", ios::app);
+	  myfile << s << "\n";
+	  myfile.close();
+	}
+
+void printAll(HashTable h, int index){
+  for(int i=0; i<index ; i++){
+    printUser(h, i);
+  }
+}
+
+void printFriends(string name, HashTable h) {
+  int tableIndex = h.search(name);
+  Node* n = h.getNode(tableIndex);
+  while(n != NULL) {
+    string name =  n->getNextFriend()->getName();
+    int line = h.getUserIndex(name); // line in the file
+    vector<string> info = getUser(line);
+    string age = info[1];
+    string occ = info[2];
+    cout << name << "," << age << "," << occ << endl;
+    n = n->getNextFriend();
+  }
+  cout << endl;
+
+}
+
+
 int main()
 {
   HashTable hashtable;
   BTree btree;
   vector<string> user;
-	
+  int index=0;
+  
 	ifstream f;
 	f.open("Generated3.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
@@ -61,7 +92,7 @@ int main()
 	// initialize the hash table
 	else
 	{
-	  int index=0;
+
 		string line;
 		while(std::getline(f, line))
 		{
@@ -75,39 +106,67 @@ int main()
 	        
 	}
 
-	hashtable.printAll();
-
-	range("Zjduerj","Adriaa", hashtable, btree);
 
 
 
+	try
+	  {
+	    
+	    while(true)
+	      {
+		string str;
+		cin >> str;
+		if(cin.eof())
+		  {
+		    break;
+		  }
+		if(str.compare("exit") == 0)
+		  {
+		    break;
+		  }
+		else if(str.compare("insert") == 0)
+		  {
+		    string line;
+		    std::getline(cin, line);
+		    string l = "";
+		    for(int i=1; i<line.size(); i++){
+		      l += line[i];
+		    }
+		    addLine(l);
+		    vector<string> inf = split(l,',');
+		    string newName = inf[0];
+		    hashtable.insert(newName,index,inf);
+		    btree.insert(new Node(newName,index));
+		    index++;
+		  }
+		else if(str.compare("printAll")== 0)
+		  {
+		    printAll(hashtable, index+1);
+		  }
+		else if(str.compare("range")== 0)
+		  {
+		    string name1, name2;
+		    cin >> name1 >> name2;
+		    range(name1, name2, hashtable, btree);
+		  }
+		else if(str.compare("printTree")== 0)
+		  {
+		    btree.printTree(1);
+		    cout << "\n";
+		  }
+		else if(str.compare("printNodes")== 0)
+		  {
+		    btree.printTree(0);
+		    cout << "\n";
+		  }
+		
+	      }
+	  }
+	catch(exception& ex)
+	  {
+	    cerr << ex.what() << endl;
+	  }
 
-	
-	/*
-	btree.printKeyList(btree.findLeaf("A"));
-	btree.printKeyList(btree.findLeaf("B"));
-	btree.printKeyList(btree.findLeaf("D"));
-	btree.printKeyList(btree.findLeaf("R"));
-	btree.printKeyList(btree.findLeaf("G"));
-	btree.printKeyList(btree.findLeaf("H"));
-	btree.printKeyList(btree.findLeaf("Q"));
-	btree.printKeyList(btree.findLeaf("U"));
-	btree.printKeyList(btree.findLeaf("F"));
-	btree.printKeyList(btree.findLeaf("E"));
-	btree.printKeyList(btree.findLeaf("N"));
-	btree.printKeyList(btree.findLeaf("z"));
-	btree.printKeyList(btree.findLeaf("o"));
-	btree.printKeyList(btree.findLeaf("w"));
-	btree.printKeyList(btree.findLeaf("p"));
-	btree.printKeyList(btree.findLeaf("q"));
-	btree.printKeyList(btree.findLeaf("a"));
-	*/
-
-	/*
-	for(int i=0; i<65; i++) {
-	  printUser(hashtable,i);	
-	}
-	*/
 	  
 	return 0;
 }
