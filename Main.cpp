@@ -61,18 +61,33 @@ void printAll(HashTable h, int index){
   }
 }
 
+
+int getUserLine(string name){
+  //user must already exist in the network
+  int i=1;
+  while(getUser(i)[0] != name){
+    i++;
+  }
+  return i;
+}
+
+
 void printFriends(string name, HashTable h) {
   int tableIndex = h.search(name);
   Node* n = h.getNode(tableIndex);
-  while(n != NULL) {
-    string name =  n->getNextFriend()->getName();
-    int line = h.getUserIndex(name); // line in the file
+  while(n->getNextFriend() != NULL) {
+    n = n->getNextFriend();
+    string name = n->getName();
+    int line = getUserLine(name); // line in the file
     vector<string> info = getUser(line);
     string age = info[1];
     string occ = info[2];
     cout << name << "," << age << "," << occ << endl;
-    n = n->getNextFriend();
+    
+    //cout << name << line;
+    //cout << endl;
   }
+
   cout << endl;
 
 }
@@ -105,10 +120,7 @@ int main()
 		}
 	        
 	}
-
-
-
-
+	
 	try
 	  {
 	    
@@ -159,7 +171,18 @@ int main()
 		    btree.printTree(0);
 		    cout << "\n";
 		  }
-		
+		else if(str.compare("printFriends")==0)
+		  {
+		    string name;
+		    cin >> name;
+		    printFriends(name, hashtable);
+		  }
+		else if(str.compare("addFriend")==0)
+		  {
+		    string friend1, friend2;
+		    cin >> friend1 >> friend2;
+		    hashtable.addFriend(friend1, friend2);
+		  }
 	      }
 	  }
 	catch(exception& ex)

@@ -13,17 +13,10 @@ Node::Node(string name) {
 }
   
 void Node::addFriend(Node* next) {
-  Node* temp = this->getNextFriend();
+  Node* temp = this;
   
-  if(temp == NULL) {
-    this->setNextFriend(next);
+  while(temp->getNextFriend() != NULL){
+    temp=temp->getNextFriend();
   }
-  
-  else {
-    while(temp->getNextFriend() != NULL) {
-      temp = temp->getNextFriend();
-    }
-    
-    temp->setNextFriend(next);
-  }
+  temp->setNextFriend(new Node(next->getName(), next->index));
 }
