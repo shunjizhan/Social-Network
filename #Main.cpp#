@@ -64,19 +64,20 @@ int main()
 			index++;
 			hashtable.insert(name,index,words);
 			btree.insert(new Node(name,index));
+			//cout << btree.bigger(name, "ZZZZZZZZZZZ");
 		}
 	        
 	}
 
 	hashtable.printAll();
 
-	vector<int> indexes = btree.getAllIndex("Y", "t");
+	vector<int> indexes = btree.getAllIndex("C", "f");
 
 	
 	for(int i=0; i<indexes.size(); i++) {
-	   printUser(hashtable, indexes[i]);
+	  cout << indexes[i] << endl;
+	  //printUser(hashtable, indexes[i]);	
 	}
-	
 	/*
 	btree.printKeyList(btree.findLeaf("A"));
 	btree.printKeyList(btree.findLeaf("B"));
@@ -89,12 +90,7 @@ int main()
 	btree.printKeyList(btree.findLeaf("F"));
 	btree.printKeyList(btree.findLeaf("E"));
 	btree.printKeyList(btree.findLeaf("N"));
-	btree.printKeyList(btree.findLeaf("z"));
-	btree.printKeyList(btree.findLeaf("o"));
-	btree.printKeyList(btree.findLeaf("w"));
-	btree.printKeyList(btree.findLeaf("p"));
-	btree.printKeyList(btree.findLeaf("q"));
-	btree.printKeyList(btree.findLeaf("a"));
+	btree.printKeyList(btree.findLeaf("T"));
 	*/
 
 	/*

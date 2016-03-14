@@ -10,7 +10,7 @@ class BTreeNode {
     this->keys = new Node*[5];
     this->children = new BTreeNode*[6];
     for(int i=0; i<5; i++) {
-      keys[i]= new Node("zzzzzzzzzzzzz");
+      keys[i]= new Node("~");
     }
     this->parent = parent;
     for(int i=0; i<6; i++) {
@@ -85,7 +85,6 @@ class BTree {
     cout << endl;
     
     if(parent == NULL) {  // this is the root
-      cout << "LLLLLLLLLLLLLLLLLLLL";
       BTreeNode* newRoot = new BTreeNode(false,NULL);
       BTreeNode* left = new BTreeNode(true,newRoot);
       BTreeNode* right = new BTreeNode(true,newRoot);
@@ -157,7 +156,10 @@ class BTree {
   }
 
   void splitNonLeaf(BTreeNode* node) {
-    cout << "splitNonLeaf!!!!!!!!!!!!!!!!!!!" << endl;
+    cout << "___________________________splitNonLeaf__________________________________" << endl;
+    cout << "node=";
+    printKeyList(node);
+    cout << endl;
     BTreeNode* parent = node->parent;
     BTreeNode* left = new BTreeNode(false,parent);
     BTreeNode* right = new BTreeNode(false,parent);
@@ -189,15 +191,33 @@ class BTree {
     if(parent != NULL) { // this is not the root 
       // find place in the parent to put int goesUp
       int i = parent->currentKeyNumber-1;
+      cout << "before:";
+      printKeyList(parent);
+      cout << endl;
       while((i >= 0) && bigger(parent->keys[i]->getName(), goesUp)) {
 	parent->keys[i+1] = parent->keys[i];
 	parent->children[i+2] = parent->children[i+1];
 	i--;
+	printKeyList(parent);
+	cout << endl;
       }
+
+      cout << "before pushup:";
+      printKeyList(parent);
+      cout << endl;
+      cout << "i+1=" << i+1 << "  ========================================"<< endl;
+      parent->keys[i+1]= new Node(goesUp);
+
+      cout << "after pushup:";
+      printKeyList(parent);
+      cout << endl;
       
-      parent->keys[i+1]->setName(goesUp);
       parent->children[i+1] = left;
       parent->children[i+2] = right;
+
+      cout << "after pushup:";
+      printKeyList(parent);
+      cout << endl;
       
       parent->currentKeyNumber++;
       if(parent->currentKeyNumber == 5) {
@@ -251,26 +271,29 @@ class BTree {
 
   void printTree(BTreeNode* node) {
     if(node != NULL) {   
+      
+	for(int i=0; i<6; i++) {
+	  printTree(node->children[i]);
+	}
+		     if(node->isLeaf) { 
       cout << "isLeaf=" << node->isLeaf << ", " << "keyList=";
 
+      
       printKeyList(node);
       
       cout << ", " << "currentKeyNumber=" << node->currentKeyNumber << ", ";
       
       cout << "parent's keyList=";
       printKeyList(node->parent);
-      cout << endl;
 
-      cout << "L=";
+      cout << ", L=";
       printKeyList(node->leftP);
       cout << ", R=";
       printKeyList(node->rightP);
       cout << endl;
       
-      
-      for(int i=0; i<6; i++) {
-	printTree(node->children[i]);
-      }
+        }
+
       
     }
   }
@@ -279,11 +302,11 @@ class BTree {
     if(node != NULL) {
       cout << "[";
       for(int i=0; i<5; i++) {
-	if(node->keys[i]->getName() != "zzzzzzzzzzzzz") {
+	if(node->keys[i]->getName() != "~") {
 	  cout << node->keys[i]->getName();
 	}
 	else {
-	  cout << "X";
+	  cout << "_";
 	}
 	if(i != 4) { cout << ",";}
       }
@@ -303,7 +326,50 @@ class BTree {
 
   }
 
-  /*
+  BTreeNode* findLeaf(string name) {
+    return findLeaf(name,root);
+  }
+
+  BTreeNode* findLeaf(string name, BTreeNode* node) {
+    if(node->isLeaf) {
+      return node;
+    }
+    
+    else {
+      int i=0;
+      while((!(bigger(node->keys[i]->getName(), name))) && i<4) {
+	i++;
+      }
+      
+      return findLeaf(name, node->children[i]);
+    }   
+
+  }
+
+  int findIndex(string name, BTreeNode* node, int k) {
+    // k=1 means small
+    // k=2 means large
+    int index;
+    if(k==1) {
+      for(int i=0; i<3; i++) {
+	if((bigger(node->keys[i]->getName(),  name)) || (node->keys[i]->getName() == name)) {
+	  index = i;
+	  return i;
+	}
+      }
+    }
+    if(k==2) { 
+      for(int i=0; i<3; i++) {
+	if((bigger(node->keys[i]->getName(), name)) || (node->keys[i]->getName() == name)) {
+	  index = i;
+	  return i;
+	}
+      }
+    }
+    return 2;
+  }
+
+  
   vector<int> getAllIndex(string name1, string name2) {
     string small;
     string large;
@@ -317,14 +383,52 @@ class BTree {
       large = name2;
     }
 
-    return range(small,large,root);    
-  }
+    vector<int> indexes;
+    BTreeNode* smallLeaf = findLeaf(small);
+    BTreeNode* largeLeaf = findLeaf(large);
+    cout << "small:";
+    printKeyList(smallLeaf);
+    cout << "  large:";
+    printKeyList(largeLeaf);
+    cout << endl;
+    int index = findIndex(small, smallLeaf, 1);
+    int largeIndex = findIndex(large, largeLeaf, 2);
 
-  vector<int> getAllIndex(string small, string large, BTreeNode* node) {
-    
+    BTreeNode* p = smallLeaf;
+    cout << "p=";
+    printKeyList(p);
+    cout << endl;
+    while(p != largeLeaf) {
+      if(p->keys[index]->getName() != "~") {
+	indexes.push_back(p->keys[index]->getIndex());
+	//cout << "added " << p->keys[index]->getIndex() << endl;
+      }
+      index++;
+      if(index == 4) {
+	index = 0;
+	p = p->rightP;
+	cout << "p=";
+	printKeyList(p);
+	cout << endl;
+      }
+    }
 
+    cout << "p=";
+    printKeyList(p);
+    cout << endl;
+
+    for(int i=0; i<=largeIndex; i++) {
+      if(p->keys[i]->getName() != "~") {
+	indexes.push_back(p->keys[i]->getIndex());
+	cout << "large index=" << largeIndex << endl;
+	cout << "i=" << i << endl;
+	//cout << "added " << p->keys[index]->getIndex() << endl;
+      }
+    }
+
+    return indexes;
   }
-  */
+  
   
  private:
   BTreeNode* root;

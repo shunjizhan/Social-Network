@@ -62,7 +62,7 @@ void HashTable::printAll() {
     if(table[i] != NULL) {
       count++;
       cout << "name=" << table[i]->getName()
-	   << " index=" << table[i]->getIndex()
+	   << " table index=" << table[i]->getIndex()
 	   << " friend:";
       Node* thisFriend = table[i]->getNextFriend();
       while( thisFriend != NULL) {
