@@ -321,7 +321,7 @@ class BTree {
       i++;
     }
     
-    if(s1[i] > s2[i])  { return true;}
+    if(!(s1[i] < s2[i]))  { return true;}
     else { return false;}
 
   }
@@ -362,7 +362,10 @@ class BTree {
       for(int i=0; i<3; i++) {
 	if((bigger(node->keys[i]->getName(), name)) || (node->keys[i]->getName() == name)) {
 	  index = i;
-	  return i;
+	  if((node->keys[i]->getName() == name)) {return i;}
+	  else {
+	    return i-1;
+	  }
 	}
       }
     }

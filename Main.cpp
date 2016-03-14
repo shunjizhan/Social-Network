@@ -26,7 +26,7 @@ vector<string> getUser(int index) {   // index is the file index
   vector<string> allInfo;
   string line;
   ifstream myfile;
-  myfile.open("test.txt", ios::in);
+  myfile.open("Generated3.txt", ios::in);
   for (int lineno = 0; getline (myfile,line) && lineno < index+1; lineno++) {
     if (lineno == index-1) {
       allInfo = split(line, ',');
@@ -41,6 +41,13 @@ void printUser(HashTable h, int index) {   // index is the index in the file
   h.printUser(info);
 }
 
+void range(string name1, string name2, HashTable h, BTree btree) {
+  vector<int> indexes = btree.getAllIndex(name1, name2);	
+  for(int i=0; i<indexes.size(); i++) {
+    printUser(h, indexes[i]);
+  }
+}
+
 int main()
 {
   HashTable hashtable;
@@ -48,7 +55,7 @@ int main()
   vector<string> user;
 	
 	ifstream f;
-	f.open("test.txt", ios::in);
+	f.open("Generated3.txt", ios::in);
 	if(!f) cerr << "File not found" << endl;
 
 	// initialize the hash table
@@ -70,12 +77,11 @@ int main()
 
 	hashtable.printAll();
 
-	vector<int> indexes = btree.getAllIndex("Y", "t");
+	range("Zjduerj","Adriaa", hashtable, btree);
 
-	
-	for(int i=0; i<indexes.size(); i++) {
-	   printUser(hashtable, indexes[i]);
-	}
+
+
+
 	
 	/*
 	btree.printKeyList(btree.findLeaf("A"));
