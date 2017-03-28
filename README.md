@@ -1,5 +1,5 @@
 # Introduction
-This is a program written in C++, which simualtes social networking, where people can add/remove/find friends. 
+This is a program written in C++, which simulates a social networking, where people can add/remove/find friends. 
 
 # Run
     cd Social_Network/
