@@ -7,14 +7,14 @@ This is a program written in C++, which simualtes social networking, where peopl
     ./run
 
 # Functionalities:
-`insert [name]` insert an person into the network.<br/>      
-`printAll` print every person in the network, including their names, ages, and all their friends.<br/>        
-`range [name1] [name2]` print every person in the network between name1 and name2, including their names, ages, and all their friends.<br/>       
-`printTree:` print the current B+ tree.<br/>      
-`printNodes` print all leaves in the current B+ tree.<br/>        
-`printFriends [name]` print all friends' information of a person.<br/>        
-`addFriend [name1] [name2]` make these two people become friends.<br/>        
-`printHashTable` print current hashtable.<br/>        
+`insert [name]` insert an person into the network.<br />      
+`printAll` print every person in the network, including their names, ages, and all their friends.<br />        
+`range [name1] [name2]` print every person in the network between name1 and name2, including their names, ages, and all their friends.<br />       
+`printTree:` print the current B+ tree.<br />      
+`printNodes` print all leaves in the current B+ tree.<br />        
+`printFriends [name]` print all friends' information of a person.<br />        
+`addFriend [name1] [name2]` make these two people become friends.<br />        
+`printHashTable` print current hashtable.<br />        
 
 # Specification
 It contains:
