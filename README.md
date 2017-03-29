@@ -26,5 +26,5 @@ user, edges to all his/her friends as well as a pointer to his/her record in the
 node in the friendship graph, thus allowing access to the friends of the given user.
 
 # Author
-Shunji Zhan
+Shunji Zhan & Dongyang Li
 
